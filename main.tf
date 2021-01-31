@@ -24,3 +24,11 @@ module "vpc" {
   project = "AWS-POC"
   environment = "Sandbox"
 }
+
+module "instances" {
+  source = "./modules/instances"
+  aws_vpc = module.vpc.vpc_id
+  private_subnet_id = module.vpc.private_subnet3_id
+  public_subnet_id = module.vpc.public_subnet1_id
+  key_name = "ec2-test"
+}
