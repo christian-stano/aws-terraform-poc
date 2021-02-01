@@ -1,5 +1,5 @@
 #
-# VPC resources
+# VPC resources and internet gateway
 #
 resource "aws_vpc" "default" {
   cidr_block = var.vpc_cidr
@@ -23,9 +23,6 @@ resource "aws_internet_gateway" "default" {
   },
   var.tags)
 }
-output "vpc_id" {
-  value = aws_vpc.default.id
-}
 
 #
 # Public Subnets
@@ -42,9 +39,6 @@ resource "aws_subnet" "public1" {
   },
   var.tags)
 }
-output "public_subnet1_id" {
-  value = aws_subnet.public1.id
-}
 
 resource "aws_subnet" "public2" {
   vpc_id = aws_vpc.default.id
@@ -58,9 +52,7 @@ resource "aws_subnet" "public2" {
   },
   var.tags)
 }
-output "public_subnet2_id" {
-  value = aws_subnet.public2.id
-}
+
 
 #
 # Public Subnet Internet Access
@@ -121,14 +113,6 @@ resource "aws_subnet" "private3" {
   var.tags)
 }
 
-output "private_subnet3_id" {
-  value = aws_subnet.private3.id
-}
-
-output "private_subnet3_ipv4" {
-  value = aws_subnet.private3.cidr_block
-}
-
 resource "aws_subnet" "private4" {
   vpc_id = aws_vpc.default.id
   cidr_block = var.private_subnet_cidr_blocks[1]
@@ -140,8 +124,4 @@ resource "aws_subnet" "private4" {
     Environment = var.environment
   },
   var.tags)
-}
-
-output "private_subnet4_id" {
-  value = aws_subnet.private4.id
 }

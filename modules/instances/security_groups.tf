@@ -1,3 +1,4 @@
+# Create a security group to allow SSH inbound and outbound traffic
 resource "aws_security_group" "ec2_allow_ssh" {
   name = "ec2_allow_ssh"
   description = "Allow SSH inbound and outbound traffic"
@@ -20,6 +21,7 @@ resource "aws_security_group" "ec2_allow_ssh" {
   }
 }
 
+# Create a security group to allow HTTP inbound and outbound traffic
 resource "aws_security_group" "ec2_allow_http" {
   name = "ec2_allow_http"
   description = "Allow HTTP inbound and outbound traffic"
@@ -40,9 +42,5 @@ resource "aws_security_group" "ec2_allow_http" {
     cidr_blocks = [
       "0.0.0.0/0"]
   }
-}
-
-output "ec2_allow_http" {
-  value = aws_security_group.ec2_allow_http.id
 }
 

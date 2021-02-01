@@ -2,6 +2,7 @@ data "aws_vpc" "default" {
   id = var.aws_vpc
 }
 
+# Retrieve latest Red Hat Linux image for EC2 instance
 data "aws_ami" "redhat_linux_private" {
   most_recent = true
   owners = [
@@ -14,6 +15,7 @@ data "aws_ami" "redhat_linux_private" {
   }
 }
 
+# Create EC2 instance in sub3 with 20gb volume mounted and Apache installed
 resource "aws_instance" "sub3_instance" {
   ami = data.aws_ami.redhat_linux_private.id
   instance_type = var.instance_type
@@ -32,9 +34,5 @@ resource "aws_instance" "sub3_instance" {
   tags = {
     Name = "PrivateEC2Apache"
   }
-}
-
-output "sub3_instance" {
-  value = aws_instance.sub3_instance.id
 }
 

@@ -1,3 +1,4 @@
+# Retrieve latest Red Hat Linux image for EC2 instance
 data "aws_ami" "redhat_linux_public" {
   most_recent = true
   owners = [
@@ -10,6 +11,7 @@ data "aws_ami" "redhat_linux_public" {
   }
 }
 
+# Create EC2 instance in sub1 with 20gb volume mounted
 resource "aws_instance" "sub1_instance" {
   ami = data.aws_ami.redhat_linux_public.id
   instance_type = var.instance_type
@@ -29,9 +31,5 @@ resource "aws_instance" "sub1_instance" {
   tags = {
     Name = "PublicEC2Base"
   }
-}
-
-output "sub1_instance" {
-  value = aws_instance.sub1_instance.id
 }
 

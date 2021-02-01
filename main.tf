@@ -11,6 +11,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# Create the VPC and 4 subnets spread across 2 availability zones
 module "vpc" {
   source = "./modules/vpc"
 
@@ -31,6 +32,7 @@ module "vpc" {
   environment = "Sandbox"
 }
 
+# Create the EC2 instances in sub1 and sub3
 module "instances" {
   source = "./modules/instances"
   aws_vpc = module.vpc.vpc_id
@@ -39,6 +41,7 @@ module "instances" {
   key_name = "ec2-test"
 }
 
+# Create alb that forwards internal traffic on port 80 to the EC2 in sub3
 module "loadbalancer" {
   source = "./modules/loadbalancer"
 
