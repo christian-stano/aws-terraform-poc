@@ -109,7 +109,7 @@ EC2 Instances:
 * Storage: I provisioned a 20 GB root block device to meet the need for a 20 GB storage volume mount
 * SSH Acccess: I was able to successfully SSH into the instance after manually creating a key pair via the AWS console. My research yielded that this pair needed to be user-provided, which is why I created via console: (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair)
 ![screenshot](https://github.com/christian-stano/aws-terraform-poc/blob/develop/img/Sub1_EC2_SSH.png)
-I was also able to confirm that the Sub3 instance was inaccessible via SSH from the internet
+I was also able to confirm that the Sub3 instance was inaccessible via SSH from the internet. 
 ![screenshot](https://github.com/christian-stano/aws-terraform-poc/blob/develop/img/Sub3_EC2_SSH_Blocked.png)
 * Apache Scripting: I leveraged an init script to install Apache (httpd) on RHEL that is run when the instance is provisioned
 
@@ -124,3 +124,18 @@ Resources:
   * https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair
   * https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/volume_attachment
   
+#### Load Balancer
+Requirements Covered:
+* 1 alb that listens on port 80 and forwards traffic to the instance in sub sub3
+
+Load Balancer Parameters:
+* Internal: I created this load balancer as an internal load balancer because it does not need to directly interface with the internet gateway, rather with the 2 public subnets to reroute their traffic on port 80 to sub3
+* Application Type: This load balancer is an application type because it needs to support HTTP routing at the application level between instances
+* Target Group and Attachment: This parameter is used to specify where the load balancer forwards to (sub3) and specifically which instance inside sub3 we are forwarding to
+* Listener: The load balancer listens across sub1 and sub2 on port 80 for any traffic, and forwards this traffic to the target group (sub3's instances)
+
+Resources:
+* https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
+* https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener
+* https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
+* https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment
